@@ -5,164 +5,383 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Delhi//PadelCollective — Schedule</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="config.js"></script>
 <style>
   :root {
-    --bg: #f5f3ef; --card: #fff; --border: #e0ddd7; --border-dk: #c8c4bc;
-    --text: #111; --muted: #888880; --light: #edeae4; --red: #c0392b;
+    --bg: #0c0c0c;
+    --surface: #141414;
+    --card: #181818;
+    --card-hover: #1e1e1e;
+    --border: rgba(255,255,255,.08);
+    --border-dk: rgba(255,255,255,.14);
+    --text: #f0ede8;
+    --muted: rgba(255,255,255,.38);
+    --green: #b8dbb0;
+    --green-dk: #162912;
+    --purple: #a78bfa;
+    --red: #f87171;
+    --amber: #fbbf24;
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; font-size: 14px; }
 
-  header { background: #000; color: #fff; padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .logo { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: #fff; }
-  .logo .sl { color: #444; font-weight: 400; }
-  .live { display: flex; align-items: center; gap: 7px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #666; }
-  .pip { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pip 2s infinite; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: rgba(12,12,12,.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--text); letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none;
+  }
+  .logo .sl { color: rgba(255,255,255,.25); font-weight: 300; }
+  .live {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+  .pip { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pip 2s infinite; }
   @keyframes pip { 0%,100%{opacity:1}50%{opacity:.3} }
 
-  .hero { background: #000; color: #fff; padding: 52px 40px 44px; }
-  .eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 14px; }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(38px,6vw,66px); font-weight: 900; line-height: 1.0; letter-spacing: -2px; margin-bottom: 12px; }
-  .hero h1 em { font-style: italic; color: #777; }
-  .hero p { color: #555; font-size: 15px; line-height: 1.7; font-weight: 300; max-width: 420px; }
+  /* ── HERO ── */
+  .hero {
+    padding: 64px 40px 52px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  /* subtle grain texture */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: .4;
+  }
+  .hero-eyebrow {
+    font-size: 9px; font-weight: 500; letter-spacing: 4px;
+    text-transform: uppercase; color: rgba(255,255,255,.28);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 300; font-style: italic;
+    line-height: .95; letter-spacing: -2px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(11px, 1.2vw, 14px);
+    font-weight: 400; letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+    margin-bottom: 18px;
+  }
+  .hero p {
+    color: rgba(255,255,255,.35);
+    font-size: 14px; line-height: 1.7; font-weight: 300;
+    max-width: 380px;
+  }
 
-  .filter-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; overflow-x: auto; }
-  .fb { border: none; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); padding: 15px 18px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all .15s; white-space: nowrap; }
-  .fb.active { color: #000; border-bottom-color: #000; }
-  .fb:hover { color: #000; }
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex; overflow-x: auto;
+    background: var(--bg);
+    position: sticky; top: 58px; z-index: 90;
+    backdrop-filter: blur(12px);
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .fb {
+    border: none; border-bottom: 2px solid transparent;
+    background: transparent; color: var(--muted);
+    padding: 14px 18px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all .15s; white-space: nowrap;
+  }
+  .fb.active { color: var(--text); border-bottom-color: var(--green); }
+  .fb:hover { color: var(--text); }
 
-  .events-wrap { max-width: 900px; margin: 0 auto; padding: 36px 40px 80px; }
-  .sec-label { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  /* ── EVENTS WRAP ── */
+  .events-wrap { max-width: 860px; margin: 0 auto; padding: 36px 40px 80px; }
+  .sec-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(255,255,255,.2);
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
 
-  /* Card */
-  .event-card { background: #fff; border: 1px solid var(--border); display: grid; grid-template-columns: 72px 1fr 160px; margin-bottom: 1px; transition: box-shadow .2s; }
-  .event-card:first-child { border-radius: 3px 3px 0 0; }
-  .event-card:last-child  { border-radius: 0 0 3px 3px; margin-bottom: 0; }
-  .event-card:only-child  { border-radius: 3px; }
-  .event-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,.09); z-index: 1; }
-  .event-card.full-card { opacity: .7; }
+  /* ── CARD ── */
+  .event-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 68px 1fr 155px;
+    margin-bottom: 8px;
+    transition: background .2s, border-color .2s, box-shadow .2s;
+    overflow: hidden;
+  }
+  .event-card:hover {
+    background: var(--card-hover);
+    border-color: var(--border-dk);
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  }
+  .event-card.full-card { opacity: .5; }
 
-  .date-col { background: #000; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 8px; text-align: center; }
-  .full-card .date-col { background: #555; }
-  .waitlist-card .date-col { background: #333; }
-  .dc-day { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; line-height: 1; }
-  .dc-mon { font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: .6; margin-top: 2px; }
-  .dc-dow { font-size: 7px; letter-spacing: 1px; text-transform: uppercase; opacity: .4; margin-top: 3px; }
+  /* Date column */
+  .date-col {
+    background: rgba(255,255,255,.04);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 14px 8px; text-align: center;
+  }
+  .full-card .date-col { opacity: .5; }
+  .dc-day {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; font-style: italic;
+    line-height: 1; color: var(--text);
+  }
+  .dc-mon {
+    font-size: 8px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+    margin-top: 2px;
+  }
+  .dc-dow {
+    font-size: 7px; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,.2);
+    margin-top: 3px;
+  }
 
-  .c-body { padding: 16px 20px; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
+  /* Card body */
+  .c-body { padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
   .c-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 2px; }
-  .tag { font-size: 8px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 1px; }
+  .tag {
+    font-size: 8px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 3px 8px;
+    border-radius: 100px;
+  }
   .tag-game { border: 1px solid var(--border-dk); color: var(--muted); }
-  .tag-level { border: 1px solid #000; color: #000; }
-  .tag-open { background: #000; color: #fff; }
-  .tag-low  { background: #d97706; color: #fff; }
-  .tag-full { background: #555; color: #fff; }
-  .tag-waitlist { background: #7c3aed; color: #fff; }
+  .tag-level { border: 1px solid rgba(184,219,176,.3); color: var(--green); }
+  .tag-open { background: rgba(184,219,176,.12); color: var(--green); border: 1px solid rgba(184,219,176,.2); }
+  .tag-low  { background: rgba(251,191,36,.1); color: var(--amber); border: 1px solid rgba(251,191,36,.2); }
+  .tag-full { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); }
+  .tag-waitlist { background: rgba(167,139,250,.12); color: var(--purple); border: 1px solid rgba(167,139,250,.2); }
 
-  .c-day-label { font-size: 11px; color: var(--muted); font-weight: 500; }
-  .c-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; line-height: 1.2; }
-  .c-meta { display: flex; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
-  .cost-chip { display: inline-flex; align-items: center; gap: 4px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 2px; margin-top: 4px; width: fit-content; }
+  .c-day-label { font-size: 11px; color: rgba(255,255,255,.25); font-weight: 400; }
+  .c-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400; font-style: italic;
+    line-height: 1.2; color: var(--text);
+  }
+  .c-meta { display: flex; gap: 12px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+  .cost-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(184,219,176,.1); border: 1px solid rgba(184,219,176,.2);
+    color: var(--green); font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 100px; margin-top: 3px; width: fit-content;
+  }
 
-  .c-right { border-left: 1px solid var(--border); padding: 16px 18px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 10px; min-width: 160px; }
+  /* Card right */
+  .c-right {
+    border-left: 1px solid var(--border);
+    padding: 16px 16px;
+    display: flex; flex-direction: column;
+    align-items: flex-end; justify-content: center; gap: 10px;
+  }
   .slot-info { font-size: 11px; color: var(--muted); text-align: right; }
-  .slot-info strong { color: #000; }
-  .sbar { height: 3px; background: var(--light); border-radius: 2px; width: 90px; margin-top: 5px; margin-left: auto; }
-  .sfill { height: 100%; background: #000; border-radius: 2px; transition: width .4s; }
-  .sfill.warn { background: #d97706; }
-  .sfill.gone { background: #555; }
-  .sfill.wlist { background: #7c3aed; }
-  .waitlist-count { font-size: 10px; color: #7c3aed; font-weight: 600; text-align: right; margin-top: 2px; }
+  .slot-info strong { color: var(--text); font-weight: 600; }
+  .sbar { height: 2px; background: rgba(255,255,255,.08); border-radius: 2px; width: 80px; margin-top: 5px; margin-left: auto; }
+  .sfill { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s; }
+  .sfill.warn { background: var(--amber); }
+  .sfill.gone { background: rgba(255,255,255,.15); }
+  .waitlist-count { font-size: 10px; color: var(--purple); font-weight: 600; text-align: right; margin-top: 2px; }
 
-  .action-btn { border: 1px solid #000; border-radius: 1px; padding: 8px 14px; font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all .15s; white-space: nowrap; }
-  .btn-join { background: #000; color: #fff; }
-  .btn-join:hover { background: #333; }
-  .btn-waitlist { background: #7c3aed; color: #fff; border-color: #7c3aed; }
-  .btn-waitlist:hover { background: #6d28d9; }
-  .btn-joined { background: #fff; color: #000; }
-  .btn-remove { background: #fff; color: #b91c1c; border-color: #b91c1c; font-size: 9px; padding: 5px 10px; }
-  .btn-remove:hover { background: #fef2f2; }
-  .btn-disabled { background: var(--light); color: var(--muted); border-color: var(--border); cursor: not-allowed; }
+  /* Buttons */
+  .action-btn {
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer; transition: all .2s; white-space: nowrap; border: none;
+  }
+  .btn-join { background: var(--green); color: var(--green-dk); }
+  .btn-join:hover { background: #cae8c1; box-shadow: 0 4px 16px rgba(184,219,176,.3); }
+  .btn-waitlist { background: rgba(167,139,250,.15); color: var(--purple); border: 1px solid rgba(167,139,250,.25); }
+  .btn-waitlist:hover { background: rgba(167,139,250,.25); }
+  .btn-joined { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); cursor: default; }
+  .btn-remove { background: transparent; color: var(--red); border: 1px solid rgba(248,113,113,.2); font-size: 9px; padding: 5px 10px; border-radius: 100px; }
+  .btn-remove:hover { background: rgba(248,113,113,.08); }
 
-  .state-msg { text-align: center; padding: 72px 20px; }
-  .state-msg h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; }
-  .state-msg p { color: var(--muted); }
-  .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: #000; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 14px; }
+  /* States */
+  .state-msg { text-align: center; padding: 80px 20px; }
+  .state-msg h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; margin-bottom: 8px; color: var(--text); }
+  .state-msg p { color: var(--muted); font-size: 14px; }
+  .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Modal */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(8px);
+    z-index: 200; display: flex;
+    align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal { background: #fff; width: 100%; max-width: 440px; transform: translateY(14px); transition: transform .2s; }
+  .modal {
+    background: #1a1a1a;
+    border: 1px solid var(--border-dk);
+    border-radius: 16px;
+    width: 100%; max-width: 440px;
+    transform: translateY(16px); transition: transform .22s;
+    overflow: hidden;
+  }
   .modal-overlay.open .modal { transform: translateY(0); }
-  .modal-hd { background: #000; color: #fff; padding: 22px 26px; }
-  .modal-hd .ey { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 5px; }
-  .modal-hd h2 { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; }
-  .modal-hd .sub { font-size: 12px; color: #777; margin-top: 3px; }
-  .modal-hd.waitlist-hd { background: #4c1d95; }
-  .modal-bd { padding: 24px 26px; }
-  .cost-notice { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 2px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #166534; font-weight: 500; }
+
+  .modal-hd { padding: 24px 26px; border-bottom: 1px solid var(--border); }
+  .modal-hd .ey { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .modal-hd h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--text); }
+  .modal-hd .sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .modal-hd.waitlist-hd .ey { color: var(--purple); }
+  .modal-hd.waitlist-hd h2 { color: var(--purple); }
+
+  .modal-bd { padding: 22px 26px; }
+  .cost-notice {
+    background: rgba(184,219,176,.08);
+    border: 1px solid rgba(184,219,176,.18);
+    border-radius: 8px;
+    padding: 12px 14px; margin-bottom: 16px;
+    font-size: 13px; color: var(--green); font-weight: 500;
+  }
   .cost-notice strong { display: block; font-size: 16px; margin-bottom: 2px; }
   .fg { margin-bottom: 16px; }
-  .fg label { display: block; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
-  .fg input { width: 100%; background: var(--bg); border: 1px solid var(--border-dk); border-radius: 1px; padding: 11px 13px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; outline: none; transition: border-color .15s; }
-  .fg input:focus { border-color: #000; }
+  .fg label { display: block; font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .fg input {
+    width: 100%;
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--border-dk);
+    border-radius: 8px;
+    padding: 12px 14px; color: var(--text);
+    font-family: 'Inter', sans-serif; font-size: 15px;
+    outline: none; transition: border-color .15s;
+  }
+  .fg input:focus { border-color: var(--green); }
+  .fg input::placeholder { color: rgba(255,255,255,.2); }
+
   .modal-acts { display: flex; border-top: 1px solid var(--border); }
-  .modal-acts button { flex: 1; padding: 15px; border: none; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: background .15s; }
-  .btn-cx { background: var(--light); color: var(--muted); border-right: 1px solid var(--border) !important; }
-  .btn-cx:hover { background: var(--border); }
-  .btn-go { background: #000; color: #fff; }
-  .btn-go:hover { background: #222; }
-  .btn-go.wl { background: #7c3aed; }
-  .btn-go.wl:hover { background: #6d28d9; }
-  .btn-go:disabled { background: #ccc; cursor: not-allowed; }
-  .mbox { padding: 10px 13px; font-size: 13px; margin-top: 4px; border-radius: 1px; }
-  .mbox.err { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-  .mbox.ok  { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-  .mbox.info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+  .modal-acts button {
+    flex: 1; padding: 15px; border: none;
+    font-family: 'Inter', sans-serif; font-size: 11px;
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: background .15s;
+  }
+  .btn-cx { background: rgba(255,255,255,.04); color: var(--muted); border-right: 1px solid var(--border) !important; }
+  .btn-cx:hover { background: rgba(255,255,255,.08); }
+  .btn-go { background: var(--green); color: var(--green-dk); font-weight: 700; }
+  .btn-go:hover { background: #cae8c1; }
+  .btn-go.wl { background: rgba(167,139,250,.2); color: var(--purple); }
+  .btn-go.wl:hover { background: rgba(167,139,250,.3); }
+  .btn-go:disabled { background: rgba(255,255,255,.06); color: var(--muted); cursor: not-allowed; }
 
-  /* Remove confirm modal */
-  .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .mbox { padding: 10px 13px; font-size: 13px; margin-top: 8px; border-radius: 8px; line-height: 1.5; }
+  .mbox.err  { background: rgba(248,113,113,.1); color: var(--red); border: 1px solid rgba(248,113,113,.2); }
+  .mbox.ok   { background: rgba(184,219,176,.1); color: var(--green); border: 1px solid rgba(184,219,176,.2); }
+  .mbox.info { background: rgba(167,139,250,.1); color: var(--purple); border: 1px solid rgba(167,139,250,.2); }
+
+  /* ── CONFIRM MODAL ── */
+  .confirm-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.75); backdrop-filter: blur(8px);
+    z-index: 300; display: flex; align-items: center;
+    justify-content: center; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
   .confirm-overlay.open { opacity: 1; pointer-events: all; }
-  .confirm-box { background: #fff; width: 100%; max-width: 360px; padding: 28px; transform: translateY(14px); transition: transform .2s; }
+  .confirm-box {
+    background: #1a1a1a; border: 1px solid var(--border-dk);
+    border-radius: 16px; width: 100%; max-width: 360px;
+    padding: 28px; transform: translateY(14px); transition: transform .2s;
+  }
   .confirm-overlay.open .confirm-box { transform: translateY(0); }
-  .confirm-box h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-  .confirm-box p { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+  .confirm-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--text); margin-bottom: 8px; }
+  .confirm-box p { font-size: 13px; color: var(--muted); margin-bottom: 22px; line-height: 1.6; }
   .confirm-acts { display: flex; gap: 10px; }
-  .confirm-acts button { flex: 1; padding: 12px; border: none; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; }
-  .ckeep { background: var(--light); color: var(--muted); }
-  .ckeep:hover { background: var(--border); }
-  .cremove { background: #b91c1c; color: #fff; }
-  .cremove:hover { background: #991b1b; }
-  .cremove:disabled { background: #ccc; cursor: not-allowed; }
+  .confirm-acts button {
+    flex: 1; padding: 12px; border: none; border-radius: 100px;
+    font-family: 'Inter', sans-serif; font-size: 11px;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+  }
+  .ckeep { background: rgba(255,255,255,.07); color: var(--muted); }
+  .ckeep:hover { background: rgba(255,255,255,.12); }
+  .cremove { background: rgba(248,113,113,.15); color: var(--red); }
+  .cremove:hover { background: rgba(248,113,113,.25); }
+  .cremove:disabled { background: rgba(255,255,255,.05); color: var(--muted); cursor: not-allowed; }
 
-  .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px); background: #000; color: #fff; padding: 11px 22px; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; z-index: 999; transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; white-space: nowrap; }
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--green); color: var(--green-dk);
+    padding: 12px 24px; border-radius: 100px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    z-index: 999; transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0;
+    white-space: nowrap;
+  }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  footer { background: #000; color: #444; text-align: center; padding: 22px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    color: rgba(255,255,255,.15);
+    text-align: center; padding: 22px;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  }
 
   @media (max-width: 600px) {
     header, .hero { padding-left: 20px; padding-right: 20px; }
     .filter-bar { padding: 0 16px; }
     .events-wrap { padding: 24px 16px 60px; }
-    .event-card { grid-template-columns: 60px 1fr; }
+    .event-card { grid-template-columns: 58px 1fr; border-radius: 10px; }
     .c-right { display: none; }
-    .c-body { padding: 14px 16px; }
+    .c-body { padding: 14px 14px; }
+    .hero h1 { font-size: 52px; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Delhi<span class="sl">//</span>PadelCollective</div>
+  <a class="logo" href="https://dpc-padel.github.io/Home/">Delhi<span class="sl">&nbsp;//&nbsp;</span>PadelCollective</a>
   <div class="live"><span class="pip"></span>Live Schedule</div>
 </header>
 
 <section class="hero">
-  <div class="eyebrow">Upcoming Sessions</div>
-  <h1>Wanna play<br/><em>padel?</em></h1>
+  <div class="hero-eyebrow">Monthly Calendar</div>
+  <h1>Sessions</h1>
+  <div class="hero-sub">Collective</div>
   <p>Browse upcoming sessions, check open slots, and mark your interest. Start here.</p>
 </section>
 
@@ -180,9 +399,9 @@
   </div>
 </div>
 
-<footer>Delhi<span style="color:#222">//</span>PadelCollective &mdash; Wanna play padel? Start here.</footer>
+<footer>Delhi<span style="color:rgba(255,255,255,.07)">&nbsp;//&nbsp;</span>PadelCollective &mdash; Wanna play padel? Start here.</footer>
 
-<!-- RSVP / Waitlist Modal -->
+<!-- RSVP Modal -->
 <div class="modal-overlay" id="overlay">
   <div class="modal">
     <div class="modal-hd" id="modalHd">
@@ -203,7 +422,7 @@
   </div>
 </div>
 
-<!-- Remove Confirm Modal -->
+<!-- Remove Confirm -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <h3>Leave this session?</h3>
@@ -221,13 +440,13 @@
 let allEvents=[], allRSVPs=[], activeId=null, activeMode="join", currentFilter="all";
 let pendingRemoveId=null, pendingRemovePhone=null;
 
-const LS_RSVP="dpc_rsvpd_v3"; // key: eventId, value: {status, phone, name}
+const LS_RSVP="dpc_rsvpd_v3";
 function getMyRSVPs(){ try{ return JSON.parse(localStorage.getItem(LS_RSVP)||"{}"); }catch{ return {}; } }
-function saveMyRSVP(eventId, data){ const m=getMyRSVPs(); m[eventId]=data; localStorage.setItem(LS_RSVP,JSON.stringify(m)); }
-function clearMyRSVP(eventId){ const m=getMyRSVPs(); delete m[eventId]; localStorage.setItem(LS_RSVP,JSON.stringify(m)); }
+function saveMyRSVP(id,data){ const m=getMyRSVPs(); m[id]=data; localStorage.setItem(LS_RSVP,JSON.stringify(m)); }
+function clearMyRSVP(id){ const m=getMyRSVPs(); delete m[id]; localStorage.setItem(LS_RSVP,JSON.stringify(m)); }
 
-const confirmedCnt = id => allRSVPs.filter(r=>r.eventId===id && r.status!=="waitlist").length;
-const waitlistCnt  = id => allRSVPs.filter(r=>r.eventId===id && r.status==="waitlist").length;
+const confirmedCnt=id=>allRSVPs.filter(r=>r.eventId===id&&r.status!=="waitlist").length;
+const waitlistCnt=id=>allRSVPs.filter(r=>r.eventId===id&&r.status==="waitlist").length;
 
 const FLABELS={all:"All Upcoming Sessions",open:"Sessions with Open Slots",today:"Today's Sessions",week:"Sessions This Week"};
 
@@ -259,45 +478,31 @@ function render(){
   const evs=filtered(), me=getMyRSVPs(), el=document.getElementById("eventsContainer");
   if(!evs.length){el.innerHTML=`<div class="state-msg"><h3>No sessions found</h3><p>Try another filter or check back soon.</p></div>`;return;}
   el.innerHTML=evs.map(ev=>cardHTML(ev,me)).join("");
-
-  // Attach listeners
   el.querySelectorAll(".btn-join[data-id]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openModal(b.dataset.id,"join");}));
   el.querySelectorAll(".btn-waitlist[data-id]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openModal(b.dataset.id,"waitlist");}));
   el.querySelectorAll(".btn-remove[data-id]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openConfirm(b.dataset.id,b.dataset.phone);}));
 }
 
-function cardHTML(ev, me){
-  const taken    = confirmedCnt(ev.id);
-  const wlCount  = waitlistCnt(ev.id);
-  const isFull   = taken >= ev.totalSlots;
-  const open     = ev.totalSlots - taken;
-  const isLow    = open <= 2 && !isFull;
-  const myEntry  = me[ev.id];
-  const iDid     = !!myEntry && myEntry.status==="confirmed";
-  const iWait    = !!myEntry && myEntry.status==="waitlist";
-  const pct      = Math.min(100,Math.round((taken/ev.totalSlots)*100));
+function cardHTML(ev,me){
+  const taken=confirmedCnt(ev.id),wlCount=waitlistCnt(ev.id);
+  const isFull=taken>=ev.totalSlots,open=ev.totalSlots-taken,isLow=open<=2&&!isFull;
+  const myEntry=me[ev.id],iDid=!!myEntry&&myEntry.status==="confirmed",iWait=!!myEntry&&myEntry.status==="waitlist";
+  const pct=Math.min(100,Math.round((taken/ev.totalSlots)*100));
 
-  const d   = new Date(ev.date+"T00:00:00");
-  const day = d.getDate();
-  const mon = d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase();
-  const dow = d.toLocaleDateString("en-IN",{weekday:"short"}).toUpperCase();
-  const dayLabel = formatDayLabel(ev.date);
+  const d=new Date(ev.date+"T00:00:00");
+  const day=d.getDate(),mon=d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase(),dow=d.toLocaleDateString("en-IN",{weekday:"short"}).toUpperCase();
+  const dayLabel=formatDayLabel(ev.date);
 
-  // Status tag
-  let stc, stx;
-  if(isFull&&wlCount>0){ stc="tag-waitlist"; stx="Waitlist Open"; }
-  else if(isFull)       { stc="tag-full";     stx="Full"; }
-  else if(isLow)        { stc="tag-low";       stx=`${open} Left`; }
-  else                  { stc="tag-open";      stx=`${open} Left`; }
+  let stc,stx;
+  if(isFull&&wlCount>0){stc="tag-waitlist";stx="Waitlist Open";}
+  else if(isFull){stc="tag-full";stx="Full";}
+  else if(isLow){stc="tag-low";stx=`${open} Left`;}
+  else{stc="tag-open";stx=`${open} Left`;}
 
-  // Fill bar
-  const fc = isFull?"gone":pct>=70?"warn":"";
+  const fc=isFull?"gone":pct>=70?"warn":"";
+  const costChip=ev.cost?`<div class="cost-chip">💰 ${ev.cost}</div>`:"";
 
-  // Cost chip
-  const costChip = ev.cost ? `<div class="cost-chip">💰 ${ev.cost}</div>` : "";
-
-  // Action button(s)
-  let actionHTML = "";
+  let actionHTML="";
   if(iDid){
     actionHTML=`<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
       <button class="action-btn btn-joined" disabled>✓ Joined</button>
@@ -311,11 +516,10 @@ function cardHTML(ev, me){
   } else if(!isFull){
     actionHTML=`<button class="action-btn btn-join" data-id="${ev.id}">I'm In →</button>`;
   } else {
-    // Full — show waitlist option
     actionHTML=`<button class="action-btn btn-waitlist" data-id="${ev.id}">Join Waitlist</button>`;
   }
 
-  const cardClass = iWait ? "event-card waitlist-card" : isFull&&!iDid ? "event-card full-card" : "event-card";
+  const cardClass=iWait?"event-card waitlist-card":isFull&&!iDid?"event-card full-card":"event-card";
 
   return `<div class="${cardClass}">
     <div class="date-col">
@@ -341,133 +545,87 @@ function cardHTML(ev, me){
       <div class="slot-info">
         <strong>${taken}</strong> / ${ev.totalSlots} joined
         <div class="sbar"><div class="sfill ${fc}" style="width:${pct}%"></div></div>
-        ${wlCount>0?`<div class="waitlist-count">+${wlCount} on waitlist</div>`:""}
+        ${wlCount>0?`<div class="waitlist-count">+${wlCount} waitlist</div>`:""}
       </div>
       ${actionHTML}
     </div>
   </div>`;
 }
 
-// ── MODAL ─────────────────────────────────────────────────
-function openModal(id, mode){
-  activeId=id; activeMode=mode;
+function openModal(id,mode){
+  activeId=id;activeMode=mode;
   const ev=allEvents.find(e=>e.id===id);
-  const hd=document.getElementById("modalHd");
-  const ey=document.getElementById("modalEy");
-  const submitBtn=document.getElementById("mSubmit");
-
+  const hd=document.getElementById("modalHd"),ey=document.getElementById("modalEy"),btn=document.getElementById("mSubmit");
   document.getElementById("mTitle").textContent=ev.title;
   document.getElementById("mSub").textContent=`${formatDayLabel(ev.date)} · ${formatTimeRange(ev.startTime,ev.endTime)} · ${ev.location}`;
-
-  if(mode==="waitlist"){
-    hd.className="modal-hd waitlist-hd";
-    ey.textContent="Join Waitlist";
-    submitBtn.className="btn-go wl";
-    submitBtn.textContent="Join Waitlist →";
-  } else {
-    hd.className="modal-hd";
-    ey.textContent="Mark Your Interest";
-    submitBtn.className="btn-go";
-    submitBtn.textContent="I'm In →";
-  }
-
-  // Cost notice
+  if(mode==="waitlist"){hd.className="modal-hd waitlist-hd";ey.textContent="Join Waitlist";btn.className="btn-go wl";btn.textContent="Join Waitlist →";}
+  else{hd.className="modal-hd";ey.textContent="Mark Your Interest";btn.className="btn-go";btn.textContent="I'm In →";}
   const cn=document.getElementById("costNotice");
-  if(ev.cost && mode==="join"){
-    cn.style.display="block";
-    cn.innerHTML=`<strong>💰 ${ev.cost}</strong>Payment details will be sent to your WhatsApp after confirmation.`;
-  } else {
-    cn.style.display="none";
-  }
-
-  document.getElementById("rName").value="";
-  document.getElementById("rPhone").value="";
-  document.getElementById("mMsg").innerHTML="";
-  submitBtn.disabled=false;
+  if(ev.cost&&mode==="join"){cn.style.display="block";cn.innerHTML=`<strong>💰 ${ev.cost}</strong>Payment details sent to your WhatsApp after confirmation.`;}
+  else{cn.style.display="none";}
+  document.getElementById("rName").value="";document.getElementById("rPhone").value="";
+  document.getElementById("mMsg").innerHTML="";btn.disabled=false;
   document.getElementById("overlay").classList.add("open");
 }
-
-function closeModal(){ document.getElementById("overlay").classList.remove("open"); activeId=null; }
+function closeModal(){document.getElementById("overlay").classList.remove("open");activeId=null;}
 document.getElementById("mClose").addEventListener("click",closeModal);
 document.getElementById("overlay").addEventListener("click",e=>{if(e.target===e.currentTarget)closeModal();});
 
 document.getElementById("mSubmit").addEventListener("click",async()=>{
-  const name=document.getElementById("rName").value.trim();
-  const phone=document.getElementById("rPhone").value.trim();
+  const name=document.getElementById("rName").value.trim(),phone=document.getElementById("rPhone").value.trim();
   const msgEl=document.getElementById("mMsg"),btn=document.getElementById("mSubmit");
-
   if(!name||!phone){msgEl.innerHTML=`<div class="mbox err">Please fill in both fields.</div>`;return;}
   if(!/^[\d\s\+\-\(\)]{7,15}$/.test(phone)){msgEl.innerHTML=`<div class="mbox err">Enter a valid phone number.</div>`;return;}
-
-  btn.disabled=true;
-  btn.textContent="Saving…";
-  msgEl.innerHTML="";
-
+  btn.disabled=true;btn.textContent="Saving…";msgEl.innerHTML="";
   const ev=allEvents.find(e=>e.id===activeId);
   const status=activeMode==="waitlist"?"waitlist":"confirmed";
-
   try{
     await Sheets.addRSVP({eventId:activeId,eventName:ev?ev.title:"",name,phone,status});
     saveMyRSVP(activeId,{status,phone,name});
     allRSVPs.push({eventId:activeId,eventName:ev?ev.title:"",name,phone,status,timestamp:new Date().toISOString()});
-
     if(status==="confirmed"){
-      const costMsg = ev&&ev.cost
-        ? `<div class="mbox ok">🎾 You're in! We'll WhatsApp you on <strong>${phone}</strong> with payment details (${ev.cost}) to confirm your slot.</div>`
-        : `<div class="mbox ok">🎾 You're in! We'll WhatsApp you on <strong>${phone}</strong> to confirm your slot.</div>`;
-      msgEl.innerHTML=costMsg;
+      msgEl.innerHTML=ev&&ev.cost
+        ?`<div class="mbox ok">🎾 You're in! We'll WhatsApp you on <strong>${phone}</strong> with payment details (${ev.cost}) to confirm your slot.</div>`
+        :`<div class="mbox ok">🎾 You're in! We'll WhatsApp you on <strong>${phone}</strong> to confirm your slot.</div>`;
     } else {
       msgEl.innerHTML=`<div class="mbox info">⏳ You're on the waitlist! We'll WhatsApp you on <strong>${phone}</strong> if a slot opens up.</div>`;
     }
-
     btn.textContent="Done ✓";
-    setTimeout(()=>{closeModal();render();showToast(status==="waitlist"?"Added to waitlist!":"RSVP saved — see you on court!");},1600);
+    setTimeout(()=>{closeModal();render();showToast(status==="waitlist"?"Added to waitlist!":"RSVP saved — see you on court!");},5000);
   }catch(err){
-    btn.disabled=false;
-    btn.textContent=activeMode==="waitlist"?"Join Waitlist →":"I'm In →";
+    btn.disabled=false;btn.textContent=activeMode==="waitlist"?"Join Waitlist →":"I'm In →";
     msgEl.innerHTML=`<div class="mbox err">${err.message}</div>`;
   }
 });
 
-// ── REMOVE CONFIRM ────────────────────────────────────────
 function openConfirm(eventId,phone){
-  pendingRemoveId=eventId; pendingRemovePhone=phone;
-  const me=getMyRSVPs()[eventId];
-  const isWl=me&&me.status==="waitlist";
-  document.getElementById("confirmText").textContent=isWl
-    ? "You'll be removed from the waitlist."
-    : "You'll be removed from the confirmed list. Your spot will open up for others.";
-  document.getElementById("confirmRemove").disabled=false;
-  document.getElementById("confirmRemove").textContent="Yes, remove me";
+  pendingRemoveId=eventId;pendingRemovePhone=phone;
+  const me=getMyRSVPs()[eventId],isWl=me&&me.status==="waitlist";
+  document.getElementById("confirmText").textContent=isWl?"You'll be removed from the waitlist.":"You'll be removed from the confirmed list. Your spot will open up for others.";
+  document.getElementById("confirmRemove").disabled=false;document.getElementById("confirmRemove").textContent="Yes, remove me";
   document.getElementById("confirmOverlay").classList.add("open");
 }
-function closeConfirm(){ document.getElementById("confirmOverlay").classList.remove("open"); pendingRemoveId=null; pendingRemovePhone=null; }
+function closeConfirm(){document.getElementById("confirmOverlay").classList.remove("open");pendingRemoveId=null;pendingRemovePhone=null;}
 document.getElementById("confirmKeep").addEventListener("click",closeConfirm);
 document.getElementById("confirmOverlay").addEventListener("click",e=>{if(e.target===e.currentTarget)closeConfirm();});
 
 document.getElementById("confirmRemove").addEventListener("click",async()=>{
   const btn=document.getElementById("confirmRemove");
-  btn.disabled=true; btn.textContent="Removing…";
+  btn.disabled=true;btn.textContent="Removing…";
   try{
     await Sheets.removeRSVP(pendingRemoveId,pendingRemovePhone);
     allRSVPs=allRSVPs.filter(r=>!(r.eventId===pendingRemoveId&&r.phone===pendingRemovePhone));
-    clearMyRSVP(pendingRemoveId);
-    closeConfirm(); render();
-    showToast("Removed from session.");
-  }catch(err){
-    btn.disabled=false; btn.textContent="Yes, remove me";
-    alert("Error: "+err.message);
-  }
+    clearMyRSVP(pendingRemoveId);closeConfirm();render();showToast("Removed from session.");
+  }catch(err){btn.disabled=false;btn.textContent="Yes, remove me";alert("Error: "+err.message);}
 });
 
-// ── FILTERS ───────────────────────────────────────────────
 document.querySelector(".filter-bar").addEventListener("click",e=>{
   const b=e.target.closest(".fb");if(!b)return;
   document.querySelectorAll(".fb").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active"); currentFilter=b.dataset.filter; render();
+  b.classList.add("active");currentFilter=b.dataset.filter;render();
 });
 
-function showToast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),3200); }
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3200);}
 
 load();
 </script>
