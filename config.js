@@ -102,19 +102,28 @@ function normalizeTimeValue(timeStr) {
 }
 
 function formatTime(timeStr) {
-  const normalized = normalizeTimeValue(timeStr);
-  if (!normalized) return "";
+  if (!timeStr) return "";
 
-  const parts = normalized.split(":");
-  const h = Number(parts[0]);
-  const m = Number(parts[1]);
+  const raw = String(timeStr).trim();
 
-  if (!Number.isFinite(h) || !Number.isFinite(m)) return "";
+  let h, m;
+
+  const hhmm = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (hhmm) {
+    h = Number(hhmm[1]);
+    m = Number(hhmm[2]);
+  } else {
+    const dateMatch = raw.match(/(\d{1,2}):(\d{2})/);
+    if (!dateMatch) return "";
+    h = Number(dateMatch[1]);
+    m = Number(dateMatch[2]);
+  }
 
   const ampm = h >= 12 ? "PM" : "AM";
   const hr = h % 12 || 12;
   return `${hr}:${String(m).padStart(2, "0")} ${ampm}`;
 }
+
 
 
 function formatTimeRange(start, end) {
