@@ -789,7 +789,7 @@ function openModal(id,mode){
   if(mode==="waitlist"){hd.className="modal-hd waitlist-hd";ey.textContent="Join Waitlist";btn.className="btn-go wl";btn.textContent="Join Waitlist →";}
   else{hd.className="modal-hd";ey.textContent="Mark Your Interest";btn.className="btn-go";btn.textContent="I'm In →";}
   const cn=document.getElementById("costNotice");
-  if(ev.cost&&mode==="join"){cn.style.display="block";cn.innerHTML=`<strong>💰 ${ev.cost}</strong>Payment details sent to your WhatsApp after confirmation.`;}
+  if(ev.cost&&mode==="join"){cn.style.display="block";cn.innerHTML=`<strong>💰 ${ev.cost}</strong>We’ll be in touch on WhatsApp to confirm your spot`;}
   else{cn.style.display="none";}
   document.getElementById("rName").value="";document.getElementById("rPhone").value="";
   document.getElementById("mMsg").innerHTML="";btn.disabled=false;
