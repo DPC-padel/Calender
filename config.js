@@ -83,16 +83,29 @@ function formatDateShort(dateStr) {
   return d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
 }
 
+// Convert any time format to "HH:MM" string
+// Handles: Google Sheets decimal (0.5), "14:30", "14:30:00", ISO "T14:30"
 function normalizeTimeValue(timeStr) {
-  if (!timeStr) return "";
+  if (!timeStr && timeStr !== 0) return "";
 
   const raw = String(timeStr).trim();
 
+  // Google Sheets decimal fraction: 0.5 = 12:00, 0.0208333 = 30min, etc.
+  const num = Number(raw);
+  if (!isNaN(num) && raw !== "" && !raw.includes(":")) {
+    const totalMinutes = Math.round(num * 24 * 60);
+    const h = Math.floor(totalMinutes / 60) % 24;
+    const m = totalMinutes % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+
+  // Already HH:MM or HH:MM:SS
   const hhmmMatch = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
   if (hhmmMatch) {
     return `${hhmmMatch[1].padStart(2, "0")}:${hhmmMatch[2]}`;
   }
 
+  // ISO datetime string: "2024-05-01T14:30:00"
   const isoMatch = raw.match(/T(\d{2}):(\d{2})/);
   if (isoMatch) {
     return `${isoMatch[1]}:${isoMatch[2]}`;
@@ -102,23 +115,17 @@ function normalizeTimeValue(timeStr) {
 }
 
 function formatTime(timeStr) {
-  if (!timeStr) return "";
+  if (!timeStr && timeStr !== 0) return "";
 
-  const raw = String(timeStr).trim();
+  // First normalize to HH:MM
+  const normalized = normalizeTimeValue(timeStr);
+  if (!normalized) return "";
 
-  let h, m;
+  const parts = normalized.match(/^(\d{1,2}):(\d{2})$/);
+  if (!parts) return normalized;
 
-  const hhmm = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
-  if (hhmm) {
-    h = Number(hhmm[1]);
-    m = Number(hhmm[2]);
-  } else {
-    const dateMatch = raw.match(/(\d{1,2}):(\d{2})/);
-    if (!dateMatch) return "";
-    h = Number(dateMatch[1]);
-    m = Number(dateMatch[2]);
-  }
-
+  const h = Number(parts[1]);
+  const m = Number(parts[2]);
   const ampm = h >= 12 ? "PM" : "AM";
   const hr = h % 12 || 12;
   return `${hr}:${String(m).padStart(2, "0")} ${ampm}`;
