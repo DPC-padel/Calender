@@ -83,13 +83,39 @@ function formatDateShort(dateStr) {
   return d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
 }
 
-function formatTime(timeStr) {
+function normalizeTimeValue(timeStr) {
   if (!timeStr) return "";
-  const [h, m] = timeStr.split(":").map(Number);
-  const ampm = h >= 12 ? "PM" : "AM";
-  const hr   = h % 12 || 12;
-  return `${hr}:${m.toString().padStart(2, "0")} ${ampm}`;
+
+  const raw = String(timeStr).trim();
+
+  const hhmmMatch = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (hhmmMatch) {
+    return `${hhmmMatch[1].padStart(2, "0")}:${hhmmMatch[2]}`;
+  }
+
+  const isoMatch = raw.match(/T(\d{2}):(\d{2})/);
+  if (isoMatch) {
+    return `${isoMatch[1]}:${isoMatch[2]}`;
+  }
+
+  return raw;
 }
+
+function formatTime(timeStr) {
+  const normalized = normalizeTimeValue(timeStr);
+  if (!normalized) return "";
+
+  const parts = normalized.split(":");
+  const h = Number(parts[0]);
+  const m = Number(parts[1]);
+
+  if (!Number.isFinite(h) || !Number.isFinite(m)) return "";
+
+  const ampm = h >= 12 ? "PM" : "AM";
+  const hr = h % 12 || 12;
+  return `${hr}:${String(m).padStart(2, "0")} ${ampm}`;
+}
+
 
 function formatTimeRange(start, end) {
   if (!start) return "";
