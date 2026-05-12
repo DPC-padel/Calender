@@ -419,6 +419,7 @@ header {
 
 .fg { margin-bottom: 16px; }
 .fg label { display: block; font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.fg-note { display: block; margin-top: 6px; font-size: 11px; color: var(--muted); line-height: 1.4; }
 
 .fg input {
   width: 100%;
@@ -641,7 +642,11 @@ footer {
     <div class="modal-bd">
       <div id="costNotice" style="display:none" class="cost-notice"></div>
       <div class="fg"><label>Your Name</label><input type="text" id="rName" placeholder="Full name" autocomplete="name"/></div>
-      <div class="fg"><label>WhatsApp / Phone</label><input type="tel" id="rPhone" placeholder="+91 98765 43210" autocomplete="tel"/></div>
+      <div class="fg">
+        <label>WhatsApp / Phone</label>
+        <input type="tel" id="rPhone" placeholder="9876543210" autocomplete="tel"/>
+        <small class="fg-note">Enter digits only. Do not use +, spaces, brackets, or hyphens.</small>
+      </div>
       <div id="mMsg"></div>
     </div>
     <div class="modal-acts">
@@ -672,9 +677,22 @@ const LS_RSVP="dpc_rsvpd_v3";
 function getMyRSVPs(){ try{ return JSON.parse(localStorage.getItem(LS_RSVP)||"{}"); }catch{ return {}; } }
 function saveMyRSVP(id,data){ const m=getMyRSVPs(); m[id]=data; localStorage.setItem(LS_RSVP,JSON.stringify(m)); }
 function clearMyRSVP(id){ const m=getMyRSVPs(); delete m[id]; localStorage.setItem(LS_RSVP,JSON.stringify(m)); }
+function normalizePhone(phone){ return String(phone||"").replace(/[^\d+]/g,""); }
+function sameEventId(a,b){ return String(a??"")===String(b??""); }
+function findStoredRSVP(eventId,myEntry){
+  if(!myEntry)return null;
+  const myPhone=normalizePhone(myEntry.phone);
+  const myName=String(myEntry.name||"").trim().toLowerCase();
+  return allRSVPs.find(r=>
+    sameEventId(r.eventId,eventId) && (
+      normalizePhone(r.phone)===myPhone ||
+      (myName && String(r.name||"").trim().toLowerCase()===myName)
+    )
+  ) || null;
+}
 
-const confirmedCnt=id=>allRSVPs.filter(r=>r.eventId===id&&r.status!=="waitlist").length;
-const waitlistCnt=id=>allRSVPs.filter(r=>r.eventId===id&&r.status==="waitlist").length;
+const confirmedCnt=id=>allRSVPs.filter(r=>sameEventId(r.eventId,id)&&r.status!=="waitlist").length;
+const waitlistCnt=id=>allRSVPs.filter(r=>sameEventId(r.eventId,id)&&r.status==="waitlist").length;
 
 const FLABELS={all:"All Upcoming Sessions",open:"Sessions with Open Slots",today:"Today's Sessions",week:"Sessions This Week"};
 
@@ -714,7 +732,9 @@ function render(){
 function cardHTML(ev,me){
   const taken=confirmedCnt(ev.id),wlCount=waitlistCnt(ev.id);
   const isFull=taken>=ev.totalSlots,open=ev.totalSlots-taken,isLow=open<=2&&!isFull;
-  const myEntry=me[ev.id],iDid=!!myEntry&&myEntry.status==="confirmed",iWait=!!myEntry&&myEntry.status==="waitlist";
+  const myEntry=me[ev.id],storedEntry=findStoredRSVP(ev.id,myEntry);
+  const removePhone=storedEntry?.phone||myEntry?.phone||"";
+  const iDid=!!myEntry&&myEntry.status==="confirmed",iWait=!!myEntry&&myEntry.status==="waitlist";
   const pct=Math.min(100,Math.round((taken/ev.totalSlots)*100));
 
   const d=new Date(ev.date+"T00:00:00");
@@ -734,12 +754,12 @@ function cardHTML(ev,me){
   if(iDid){
     actionHTML=`<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
       <button class="action-btn btn-joined" disabled>✓ Joined</button>
-      <button class="action-btn btn-remove" data-id="${ev.id}" data-phone="${myEntry.phone}">Remove me</button>
+      <button class="action-btn btn-remove" data-id="${ev.id}" data-phone="${removePhone}">Remove me</button>
     </div>`;
   } else if(iWait){
     actionHTML=`<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
       <button class="action-btn btn-waitlist" disabled style="opacity:.7;cursor:default;">⏳ Waitlisted</button>
-      <button class="action-btn btn-remove" data-id="${ev.id}" data-phone="${myEntry.phone}">Remove me</button>
+      <button class="action-btn btn-remove" data-id="${ev.id}" data-phone="${removePhone}">Remove me</button>
     </div>`;
   } else if(!isFull){
     actionHTML=`<button class="action-btn btn-join" data-id="${ev.id}">I'm In →</button>`;
@@ -803,7 +823,8 @@ document.getElementById("mSubmit").addEventListener("click",async()=>{
   const name=document.getElementById("rName").value.trim(),phone=document.getElementById("rPhone").value.trim();
   const msgEl=document.getElementById("mMsg"),btn=document.getElementById("mSubmit");
   if(!name||!phone){msgEl.innerHTML=`<div class="mbox err">Please fill in both fields.</div>`;return;}
-  if(!/^[\d\s\+\-\(\)]{7,15}$/.test(phone)){msgEl.innerHTML=`<div class="mbox err">Enter a valid phone number.</div>`;return;}
+  if(/[^0-9]/.test(phone)){msgEl.innerHTML=`<div class="mbox err">Invalid number. Use digits only with no special symbols.</div>`;return;}
+  if(!/^\d{7,15}$/.test(phone)){msgEl.innerHTML=`<div class="mbox err">Enter a valid phone number.</div>`;return;}
   btn.disabled=true;btn.textContent="Saving…";msgEl.innerHTML="";
   const ev=allEvents.find(e=>e.id===activeId);
   const status=activeMode==="waitlist"?"waitlist":"confirmed";
@@ -827,8 +848,10 @@ document.getElementById("mSubmit").addEventListener("click",async()=>{
 });
 
 function openConfirm(eventId,phone){
-  pendingRemoveId=eventId;pendingRemovePhone=phone;
-  const me=getMyRSVPs()[eventId],isWl=me&&me.status==="waitlist";
+  const me=getMyRSVPs()[eventId],storedEntry=findStoredRSVP(eventId,me);
+  pendingRemoveId=eventId;
+  pendingRemovePhone=storedEntry?.phone||phone||me?.phone||"";
+  const isWl=me&&me.status==="waitlist";
   document.getElementById("confirmText").textContent=isWl?"You'll be removed from the waitlist.":"You'll be removed from the confirmed list. Your spot will open up for others.";
   document.getElementById("confirmRemove").disabled=false;document.getElementById("confirmRemove").textContent="Yes, remove me";
   document.getElementById("confirmOverlay").classList.add("open");
@@ -842,7 +865,7 @@ document.getElementById("confirmRemove").addEventListener("click",async()=>{
   btn.disabled=true;btn.textContent="Removing…";
   try{
     await Sheets.removeRSVP(pendingRemoveId,pendingRemovePhone);
-    allRSVPs=allRSVPs.filter(r=>!(r.eventId===pendingRemoveId&&r.phone===pendingRemovePhone));
+    allRSVPs=allRSVPs.filter(r=>!(sameEventId(r.eventId,pendingRemoveId)&&normalizePhone(r.phone)===normalizePhone(pendingRemovePhone)));
     clearMyRSVP(pendingRemoveId);closeConfirm();render();showToast("Removed from session.");
   }catch(err){btn.disabled=false;btn.textContent="Yes, remove me";alert("Error: "+err.message);}
 });
