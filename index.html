@@ -729,6 +729,13 @@ function render(){
   el.querySelectorAll(".btn-remove[data-id]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openConfirm(b.dataset.id,b.dataset.phone);}));
 }
 
+function safeDate(dateStr){
+  if(!dateStr) return null;
+  const raw=String(dateStr).trim();
+  const d=new Date(raw.includes("T") ? raw : `${raw}T00:00:00`);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 function cardHTML(ev,me){
   const taken=confirmedCnt(ev.id),wlCount=waitlistCnt(ev.id);
   const isFull=taken>=ev.totalSlots,open=ev.totalSlots-taken,isLow=open<=2&&!isFull;
@@ -737,8 +744,10 @@ function cardHTML(ev,me){
   const iDid=!!myEntry&&myEntry.status==="confirmed",iWait=!!myEntry&&myEntry.status==="waitlist";
   const pct=Math.min(100,Math.round((taken/ev.totalSlots)*100));
 
-  const d=new Date(ev.date+"T00:00:00");
-  const day=d.getDate(),mon=d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase(),dow=d.toLocaleDateString("en-IN",{weekday:"short"}).toUpperCase();
+  const d=safeDate(ev.date);
+  const day=d?d.getDate():"—";
+  const mon=d?d.toLocaleDateString("en-IN",{month:"short"}).toUpperCase():"";
+  const dow=d?d.toLocaleDateString("en-IN",{weekday:"short"}).toUpperCase():"";
   const dayLabel=formatDayLabel(ev.date);
 
   let stc,stx;
